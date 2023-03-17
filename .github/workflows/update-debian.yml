@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: update-alpine-workflow
+name: update-debian-workflow
 
 # Controls when the action will run. 
 on:
