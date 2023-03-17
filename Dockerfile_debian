@@ -1,0 +1,48 @@
+FROM debian:11.6
+LABEL maintainer "DI GREGORIO Nicolas <nicolas.digregorio@gmail.com>"
+
+ARG S6_VERSION='3.1.4.1'
+ARG S6_ARCH='x86_64'
+
+### Environment variables
+ENV LANG='en_US.UTF-8' \
+    LANGUAGE='en_US.UTF-8' \
+    S6_BEHAVIOUR_IF_STAGE2_FAILS='2' \
+    S6_VERSION="${S6_VERSION}" \
+    S6_ARCH="${S6_ARCH}" \
+    DEBIAN_FRONTEND='noninteractive'
+
+COPY root/ /
+
+RUN set -x && \
+    apt-get update && \
+    apt-get -y --no-install-recommends dist-upgrade && \
+    apt-get -y --no-install-recommends install \
+      ca-certificates \
+      wget \
+      xz-utils \
+    && \
+    mkdir /tmp/s6 && \
+    wget https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-noarch.tar.xz -O /tmp/s6/s6-overlay-noarch.tar.xz && \
+    wget https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-noarch.tar.xz.sha256 -O /tmp/s6/s6-overlay-noarch.tar.xz.sha256 && \
+    wget https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-${S6_ARCH}.tar.xz -O /tmp/s6/s6-overlay-${S6_ARCH}.tar.xz && \
+    wget https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-${S6_ARCH}.tar.xz.sha256 -O /tmp/s6/s6-overlay-${S6_ARCH}.tar.xz.sha256 && \
+    cd /tmp/s6 && \
+    sha256sum -c *.sha256 && \
+    tar -Jxpf s6-overlay-noarch.tar.xz -C / && \
+    tar -Jxpf s6-overlay-${S6_ARCH}.tar.xz -C / && \
+    useradd -u 12345 -m -U -s /sbin/nologin appuser && \
+    apt-get purge -y \
+      ca-certificates \
+      wget \
+      xz-utils \
+    && \
+    apt-get -y autoremove && \
+    apt-get -y clean && \
+    apt-get -y autoclean && \
+    rm -rf /tmp/* \
+           /var/lib/apt/lists/*  \
+           /var/tmp/*
+
+### Start Program
+ENTRYPOINT ["/init"]

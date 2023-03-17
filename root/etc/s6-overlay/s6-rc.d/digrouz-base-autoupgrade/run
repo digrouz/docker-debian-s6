@@ -1,0 +1,16 @@
+#!/command/with-contenv bash
+
+autoupgrade=${AUTOUPGRADE:-0}
+
+if [ "${autoupgrade}" == 1 ]; then
+  if [ "$(id -u)" = '0' ]; then
+    apt-get update && \
+    apt-get -y --no-install-recommends dist-upgrade && \
+    apt-get -y autoremove
+    apt-get -y clean
+    apt-get -y autoclean
+    rm -rf /var/lib/apt/lists/*
+  else
+    echo "[WARNING]: cannot run autoupgrade, not running as root"
+  fi
+fi

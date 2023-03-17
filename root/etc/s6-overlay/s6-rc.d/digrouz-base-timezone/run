@@ -1,0 +1,10 @@
+#!/command/with-contenv bash
+
+tz=${TZ:-"Europe/Brussels"}
+
+if [ -f /usr/share/zoneinfo/${tz} ]; then
+  cp /usr/share/zoneinfo/${tz} /etc/localtime
+  echo "${tz}" > /etc/timezone
+else
+  echo "[ERROR] wrong timezone provided, please check env TZ"
+fi

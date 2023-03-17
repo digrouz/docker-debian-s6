@@ -1,0 +1,7 @@
+#!/command/with-contenv bash
+
+NUID=${UID:-12345}
+NGID=${GID:-12345}
+
+groupmod -o -g "${NGID}" appuser
+usermod -o -u "${NUID}" appuser
