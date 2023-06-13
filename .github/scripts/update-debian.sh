@@ -13,6 +13,6 @@ if output=$(git status --porcelain) && [ -z "$output" ]; then
   echo "No new version available!"
 else
   # Uncommitted changes
-  git commit -a -m "rebased to Alpine Linux  version: ${LAST_VERSION}"
+  git commit -a -m "rebased to Debian Linux  version: ${LAST_VERSION}"
   git push
 fi
