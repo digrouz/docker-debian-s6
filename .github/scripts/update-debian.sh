@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DEBIAN_URL="http://ftp.be.debian.org/debian/dists/bullseye/Release"
+DEBIAN_URL="http://ftp.be.debian.org/debian/dists/stable/Release"
 
 LAST_VERSION=$(curl -SsL ${DEBIAN_URL} | grep "Version:" | awk '{print $2}')
 
