@@ -1,4 +1,4 @@
-FROM debian:12.5
+FROM debian:12.6
 LABEL maintainer "DI GREGORIO Nicolas <nicolas.digregorio@gmail.com>"
 
 ARG S6_VERSION='3.2.0.0'
