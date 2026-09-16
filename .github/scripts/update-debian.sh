@@ -4,7 +4,7 @@
 #LAST_VERSION=$(curl -SsL ${DEBIAN_URL} | grep "Version:" | awk '{print $2}')
 
 DEBIAN_URL="https://hub.docker.com/v2/repositories/library/debian/tags?page_size=1000"
-LAST_VERSION=$(curl -SsL " ${DEBIAN_URL}" \
+LAST_VERSION=$(curl -SsL "${DEBIAN_URL}" \
                | jq -r '.results[].name' \
                | grep -E '^[0-9]+\.[0-9]+$' \
                | sort -V \
